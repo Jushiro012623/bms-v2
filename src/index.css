@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+@plugin '../hero.ts';
+/* Note: You may need to change the path to fit your project structure */
+@source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+@custom-variant dark (&:is(.dark *));
+
+body{
+    font-family: "Figtree", sans-serif;
+}
+
+@theme {
+
+    --font-inter: "Inter", sans-serif
+
+    --color-primera-50: #eff5fe;
+    --color-primera-100: #e3ecfc;
+    --color-primera-200: #ccdbf9;
+    --color-primera-300: #acc3f5;
+    --color-primera-400: #8ba2ee;
+    --color-primera: #6075e2; /* PRIMARY */ 
+    --color-primera-600: #545fd7;
+    --color-primera-700: #454dbd;
+    --color-primera-800: #3a4199;
+    --color-primera-900: #353c7a;
+    --color-primera-950: #1f2247;
+
+    --color-second: #6a7282;
+    --color-second-light: #d1d5dc;
+    
+    --color-secondarya-50: #f3f5fb;
+    --color-secondarya-100: #e3e7f6;
+    --color-secondarya-200: #ced7ef;
+    --color-secondarya-300: #acbce4; 
+    --color-secondarya: #849ad6; /* SECONDARY */
+    --color-secondarya-500: #677bca;
+    --color-secondarya-600: #4d5bba; /* SECONDARY */ 
+    --color-secondarya-700: #4951ac;
+    --color-secondarya-800: #40448d;
+    --color-secondarya-900: #373b71;
+    --color-secondarya-950: #252746;
+
+    --color-accent-50: #eef7ff;
+    --color-accent-100: #daebff;
+    --color-accent-200: #bdddff;
+    --color-accent-300: #90c9ff;
+    --color-accent: #4da3ff; /* ACCENT */ 
+    --color-accent-500: #3588fc;
+    --color-accent-600: #1f68f1;
+    --color-accent-700: #1752de;
+    --color-accent-800: #1943b4;
+    --color-accent-900: #1a3c8e;
+    --color-accent-950: #152656;
+}
+
+
+.three-body {
+  --uib-size: 35px;
+  --uib-speed: 0.8s;
+  --uib-color: #5d3fd3;
+  position: relative;
+  display: inline-block;
+  height: var(--uib-size);
+  width: var(--uib-size);
+  animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+}
+
+.three-body__dot {
+  position: absolute;
+  height: 100%;
+  width: 30%;
+}
+
+.three-body__dot:after {
+  content: "";
+  position: absolute;
+  height: 0%;
+  width: 100%;
+  padding-bottom: 100%;
+  background-color: var(--uib-color);
+  border-radius: 50%;
+}
+
+.three-body__dot:nth-child(1) {
+  bottom: 5%;
+  left: 0;
+  transform: rotate(60deg);
+  transform-origin: 50% 85%;
+}
+
+.three-body__dot:nth-child(1)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite ease-in-out;
+  animation-delay: calc(var(--uib-speed) * -0.3);
+}
+
+.three-body__dot:nth-child(2) {
+  bottom: 5%;
+  right: 0;
+  transform: rotate(-60deg);
+  transform-origin: 50% 85%;
+}
+
+.three-body__dot:nth-child(2)::after {
+  bottom: 0;
+  left: 0;
+  animation: wobble1 var(--uib-speed) infinite calc(var(--uib-speed) * -0.15)
+    ease-in-out;
+}
+
+.three-body__dot:nth-child(3) {
+  bottom: -5%;
+  left: 0;
+  transform: translateX(116.666%);
+}
+
+.three-body__dot:nth-child(3)::after {
+  top: 0;
+  left: 0;
+  animation: wobble2 var(--uib-speed) infinite ease-in-out;
+}@keyframes spin78236 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wobble1 {
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
+
+@keyframes wobble2 {
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
