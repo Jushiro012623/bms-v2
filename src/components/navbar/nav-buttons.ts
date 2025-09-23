@@ -13,7 +13,7 @@ export default [
 ];
 
 export const drawer_links = [
-    { id: "1", icon: ProfileIcon, label: "Profile", href: "#" },
+    { id: "1", icon: ProfileIcon, label: "Profile", href: "profile" },
     { id: "2", icon: SettingsIcon, label: "Account Settings", href: "#" },
     { id: "3", icon: SecurityIcon, label: "Security", href: "#" },
 ]

@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { handleAxiosError } from "../../../helpers/errorHandling";
+import ErrorPage from "../../error-page";
 
 const Notice = ({ doc }: { doc: any }) => {
     if (!doc) return null;
@@ -91,7 +92,7 @@ const RequestFormPage = () => {
             setLoading(true);
             try {
                 const response = await axios({
-                    url: "http://127.0.0.1:8002/api/document-types",
+                    url: "http://192.168.122.80:8002/api/document-types",
                     headers: {
                         Accept: "application/json",
                     },
@@ -111,7 +112,11 @@ const RequestFormPage = () => {
     }, []);
 
     if (error) {
-        return <div>{error.message}</div>;
+        return (
+            <ErrorPage
+                statusCode={error.response?.data.error.status || undefined}
+            />
+        );
     }
 
     const onSubmit = async (event: any) => {
@@ -121,7 +126,7 @@ const RequestFormPage = () => {
 
             const res = await axios({
                 method: "POST",
-                url: "http://127.0.0.1:8002/api/document-requests",
+                url: "http://192.168.122.80:8002/api/document-requests",
                 headers: {
                     Accept: "application/json",
                 },
@@ -202,6 +207,12 @@ const RequestFormPage = () => {
                                             : []
                                     )
                                 }
+                                disabledKeys={data.data
+                                    .filter(
+                                        (docType: any) =>
+                                            docType.status !== "active"
+                                    )
+                                    .map((docType: any) => String(docType.id))}
                                 name="doc_type_id"
                                 label="Select documents"
                                 variant="bordered"

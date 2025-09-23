@@ -31,7 +31,7 @@ const Sidebar = () => {
             <div className="p-4 w-full flex">
                 <User
                     avatarProps={{
-                        src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+                        src: "https://heroui.com/images/hero-card-complete.jpeg",
                     }}
                     description="idevx@gmail.com"
                     name="Infinity Dev"

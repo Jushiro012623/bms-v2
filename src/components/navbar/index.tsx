@@ -18,7 +18,7 @@ const Navbar = () => {
     const crumbs = appPath[pathname] || [];
 
     return (
-        <nav className="h-20 w-full sticky top-0 z-10 border-b border-gray-100 px-10 backdrop-blur-md">
+        <nav className="h-20 w-full sticky top-0 z-50 border-b border-gray-100 px-10 backdrop-blur-md">
             <div className="flex-1 h-full flex justify-between">
                 <div className="flex flex-col justify-center text-sm">
                     <Breadcrumbs>

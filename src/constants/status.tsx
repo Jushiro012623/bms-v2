@@ -18,3 +18,51 @@ export const REQUEST_STATUS_NUMBER: Record<string, string> = {
     "4": "released",
     "10": "all", // treat All as special
 };
+
+export const HTTP_STATUS_TEXT: Record<number, { title: string; message: string }> = {
+    400: {
+        title: "Bad Request",
+        message:
+            "The server could not understand your request. Please try again.",
+    },
+    401: {
+        title: "Unauthorized",
+        message: "You must be logged in to access this page.",
+    },
+    403: {
+        title: "Forbidden",
+        message: "You don’t have permission to view this resource.",
+    },
+    404: {
+        title: "Not Found",
+        message:
+            "Sorry, the page you’re looking for doesn’t exist or has been moved.",
+    },
+    408: {
+        title: "Request Timeout",
+        message: "The server took too long to respond. Please try again later.",
+    },
+    429: {
+        title: "Too Many Requests",
+        message:
+            "You’ve sent too many requests. Please slow down and try again.",
+    },
+    500: {
+        title: "Internal Server Error",
+        message: "Something went wrong on our end. Please try again later.",
+    },
+    502: {
+        title: "Bad Gateway",
+        message:
+            "The server received an invalid response. Try refreshing the page.",
+    },
+    503: {
+        title: "Service Unavailable",
+        message:
+            "The server is temporarily unavailable. Please try again later.",
+    },
+    504: {
+        title: "Gateway Timeout",
+        message: "The server took too long to respond. Please try again later.",
+    },
+};

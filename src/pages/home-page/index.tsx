@@ -22,10 +22,10 @@ const HomePage: React.FC = () => {
             <div className="grid lg:grid-cols-2 lg:gap-y-16 gap-10">
                 {cards.map((card, index) => (
                     <Card
+                        isDisabled={card.title == "Chats"}
                         isHoverable
                         key={index}
-                        className="bg-gradient-to-br from-white to-primera-100 cursor-pointer"
-                        >
+                        className="bg-gradient-to-br from-white to-primera-100 cursor-pointer">
                         <CardBody className="flex flex-row gap-2">
                             <Image
                                 alt="HeroUI hero Image"
@@ -44,6 +44,7 @@ const HomePage: React.FC = () => {
                                     {card.description}
                                 </h1>
                                 <Button
+                                    isDisabled={card.title == "Chats"}
                                     className="bg-primera text-white flex justify-start w-fit rounded-md"
                                     onPress={() => navigate(card.href)}>
                                     Go to {card.title}

@@ -12,7 +12,6 @@ import {
     DropdownItem,
     Chip,
     Spinner,
-    Skeleton,
 } from "@heroui/react";
 import { columns } from "./items";
 import { TopContent } from "./top-content";
@@ -28,6 +27,7 @@ import { useNavigate } from "react-router";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import type { ApiResponse } from "./types";
+import ErrorPage from "../../error-page";
 
 export default function HistoryPage() {
     const navigate = useNavigate();
@@ -37,27 +37,47 @@ export default function HistoryPage() {
         link: {},
     });
     const [error, setError] = useState<any>(null);
+    const [docTypes, setDocTypes] = useState<any>([]);
     const [loading, setLoading] = useState<any>(false);
     const [params, setParams] = useState<any>(null);
+    useEffect(() => {
+        const request = async () => {
+            try {
+                const response = await axios({
+                    url: "http://192.168.122.80:8002/api/document-types",
+                    headers: {
+                        Accept: "application/json",
+                    },
+                });
+                setDocTypes(response.data.data);
+            } catch (error) {
+                setError(error);
+            }
+        };
+
+        request();
+    }, []);
+    
     useEffect(() => {
         const request = async () => {
             setLoading(true);
             try {
                 const response = await axios({
-                    url: "http://127.0.0.1:8002/api/document-requests?include=documentType",
+                    url: "http://192.168.122.80:8002/api/document-requests?include=documentType",
                     headers: {
                         Accept: "application/json",
                     },
                     params: params,
                 });
-
                 setData(response.data);
 
-                console.log(response.data);
+                // console.log(response.data, docTypeResponse.data.data);
             } catch (error) {
                 setError(error);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 1000);
             }
         };
 
@@ -65,9 +85,11 @@ export default function HistoryPage() {
     }, [params]);
 
     if (error) {
-        console.log(error.response.data.error);
-
-        return <div>{error.message}</div>;
+        return (
+            <ErrorPage
+                statusCode={error.response?.data.error.status || undefined}
+            />
+        );
     }
 
     return (
@@ -83,7 +105,11 @@ export default function HistoryPage() {
                 }}
                 selectionMode="multiple"
                 topContent={
-                    <TopContent setParams={setParams} params={params} />
+                    <TopContent
+                        setParams={setParams}
+                        params={params}
+                        docTypes={docTypes}
+                    />
                 }
                 bottomContent={
                     <BottomContent
@@ -180,7 +206,12 @@ export default function HistoryPage() {
                                                                         key="view"
                                                                         onPress={() =>
                                                                             navigate(
-                                                                                `/documents/form-update?id=${item.id}`
+                                                                                `/documents/view`,
+                                                                                {
+                                                                                    state: {
+                                                                                        data: item,
+                                                                                    },
+                                                                                }
                                                                             )
                                                                         }>
                                                                         View

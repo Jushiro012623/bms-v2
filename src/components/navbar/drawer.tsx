@@ -26,7 +26,7 @@ export default function ProfileAvatar() {
             <Avatar
                 onClick={onOpen}
                 isBordered
-                src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                src="https://heroui.com/images/hero-card-complete.jpeg"
                 classNames={{
                     base: "cursor-pointer size-9 hover:scale-105 transition-all ring-2 ",
                 }}
@@ -39,7 +39,7 @@ export default function ProfileAvatar() {
                             <DrawerHeader className="flex flex-col gap-1 items-center pt-16">
                                 <Avatar
                                     isBordered
-                                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                                    src="https://heroui.com/images/hero-card-complete.jpeg"
                                     classNames={{
                                         base: "cursor-pointer size-22 hover:scale-105 transition-all ring-2 ",
                                     }}

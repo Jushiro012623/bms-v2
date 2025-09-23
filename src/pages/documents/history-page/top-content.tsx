@@ -8,7 +8,7 @@ import {
     Tabs,
 } from "@heroui/react";
 import React from "react";
-import { animals, tabs } from "./items";
+import { tabs } from "./items";
 import {
     REQUEST_STATUS,
     REQUEST_STATUS_NUMBER,
@@ -20,9 +20,10 @@ import { HiMiniTrash } from "react-icons/hi2";
 import { BiPlus } from "react-icons/bi";
 import { useNavigate } from "react-router";
 
-export const TopContent = ({ params, setParams, isLoading }: any) => {
+export const TopContent = ({ params, setParams,docTypes }: any) => {
     const [documents, setDocuments] = React.useState<any>(new Set([]));
     const [searchText, setSearchText] = React.useState(params?.search || "");
+
 
     const navigate = useNavigate();
 
@@ -110,8 +111,8 @@ export const TopContent = ({ params, setParams, isLoading }: any) => {
                     variant="bordered"
                     selectionMode="multiple"
                     onSelectionChange={onDocumentSelectChange}>
-                    {animals.map((animal) => (
-                        <SelectItem key={animal.key}>{animal.label}</SelectItem>
+                    {docTypes.map((docType: any) => (
+                        <SelectItem key={docType.name}>{docType.name}</SelectItem>
                     ))}
                 </Select>
                 <Input
@@ -154,6 +155,12 @@ export const TopContent = ({ params, setParams, isLoading }: any) => {
                             <span>Selected: </span>
                             {Array.from(documents).map((item: any) => (
                                 <Chip
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        const newDocs = new Set(documents);
+                                        newDocs.delete(item);
+                                        onDocumentSelectChange(newDocs);
+                                    }}
                                     size="sm"
                                     key={item}
                                     radius="sm"

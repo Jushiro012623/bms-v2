@@ -4,6 +4,9 @@ import HomePage from "./pages/home-page";
 import RequestFormPage from "./pages/documents/request-form";
 import HistoryPage from "./pages/documents/history-page";
 import TypesPages from "./pages/documents/types-page";
+import ErrorPage from "./pages/error-page";
+import ViewForm from "./pages/documents/view-form";
+import ProfilePage from "./pages/profile-page";
 
 export const appPath: Record<string, { label: string; path: string }[]> = {
     "/documents": [
@@ -16,11 +19,14 @@ export const appPath: Record<string, { label: string; path: string }[]> = {
     ],
     "/documents/availables": [
         { label: "Document", path: "/documents" },
-        { label: "Availables", path: "/documents/availables" },
+        { label: "Available", path: "/documents/availables" },
     ],
-    "/documents/form-update": [
+    "/documents/view": [
         { label: "Document", path: "/documents" },
-        { label: "Update Form", path: "/documents/update-request" },
+        { label: "View Form", path: "/documents/view" },
+    ],
+    "/profile": [
+        { label: "Profile", path: "/profile" },
     ],
 };
 
@@ -36,11 +42,16 @@ const router = createBrowserRouter([
                     { index: true, Component: HistoryPage },
                     { path: "form-request", Component: RequestFormPage },
                     { path: "availables", Component: TypesPages },
-                    { path: "form-update", Component: TypesPages },
+                    { path: "view", Component: ViewForm },
                 ],
             },
+            { path: '/profile', Component: ProfilePage },
         ],
     },
+    {
+        path: "*",
+        element: <ErrorPage />
+    }
 ]);
 
 const AppRouter = () => <RouterProvider router={router} />;
