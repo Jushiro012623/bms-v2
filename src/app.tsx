@@ -4,21 +4,20 @@ import { useEffect, useState } from "react";
 import Loader from "./components/loader";
 
 const App = () => {
-    const [loading, setLoading] = useState(true);
+    const [fullPageLoading, setFullPageLoading] = useState(true);
 
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 3000);
+        const timer = setTimeout(() => setFullPageLoading(false), 1000);
         return () => clearTimeout(timer);
     }, []);
 
-    if (loading) {
-        return (
-            <Loader />
-        );
+    if (fullPageLoading) {
+        return <Loader />;
     }
+
     return (
         <HeroUIProvider>
-            <ToastProvider placement="top-right" toastOffset={60} />
+            <ToastProvider placement="bottom-right" toastOffset={5} />
             <AppRouter />
         </HeroUIProvider>
     );

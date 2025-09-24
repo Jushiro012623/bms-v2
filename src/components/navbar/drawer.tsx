@@ -57,12 +57,12 @@ export default function ProfileAvatar() {
                                 {drawer_links.map((link) => (
                                     <>
                                         <Button
-                                            onPress={() => navigate(link.href)}
+                                            onPress={() => {navigate(link.href); onClose()}}
                                             className={`cursor-pointer flex w-full bg-transparent items-center justify-between rounded-lg px-3 py-2 text-sm 
                                         ${
                                             pathname === link.href
                                                 ? "bg-accent-100 text-accent"
-                                                : "text-gray-700 hover:bg-secondarya-50"
+                                                : "text-gray-700 hover:bg-secondarya-50 dark:hover:bg-secondarya-50/20  dark:text-gray-200 "
                                         }
                                     `}>
                                             <span className="flex items-center gap-2">
@@ -107,7 +107,7 @@ export default function ProfileAvatar() {
                             <DrawerFooter>
                                 <Button
                                     fullWidth
-                                    className="bg-red-200 text-red-600"
+                                    className="bg-red-200 text-red-600 dark:bg-red-100"
                                     onPress={onClose}>
                                     Logout
                                 </Button>

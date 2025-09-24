@@ -14,11 +14,12 @@ import {
     Skeleton,
 } from "@heroui/react";
 import { AlertIcon } from "../../../components/icons/singletone/alert";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { handleAxiosError } from "../../../helpers/errorHandling";
 import ErrorPage from "../../error-page";
+import useFetch from "../../../hooks/useFetch";
 
 const Notice = ({ doc }: { doc: any }) => {
     if (!doc) return null;
@@ -27,17 +28,17 @@ const Notice = ({ doc }: { doc: any }) => {
         <Card className="py-4 px-3 max-w-[55rem] mx-auto mt-16">
             <CardHeader className="pb-0 pt-2 px-4 flex items-start">
                 <div className="flex-1">
-                    <h1 className="font-semibold text-large text-amber-600">
+                    <h1 className="font-semibold text-large text-amber-500 dark:text-amber-400 ">
                         Request Notice
                     </h1>
                     <h1 className="font-light text-sm">
                         Please take note before submitting your request
                     </h1>
                 </div>
-                <AlertIcon size={40} className="text-amber-500" />
+                <AlertIcon size={40} className="text-amber-500 dark:text-amber-400 bg-transparent" />
             </CardHeader>
             <CardBody className="overflow-visible py-8">
-                <div className="p-4 bg-warning-50 border-l-4 border-amber-500 rounded-md text-sm text-gray-800 space-y-3">
+                <div className="p-4 bg-warning-50 dark:bg-zinc-800 border-l-4 border-amber-500 dark:border-amber-400 rounded-md text-sm text-gray-800 dark:text-gray-100 space-y-3">
                     <div className="space-y-1">
                         <p>
                             <span className="font-semibold">Document:</span>{" "}
@@ -58,8 +59,8 @@ const Notice = ({ doc }: { doc: any }) => {
                     </div>
                 </div>
             </CardBody>
-            <CardFooter>
-                <p className="italic text-xs text-warning-600">
+        <CardFooter>
+                <p className="italic text-xs text-amber-500 dark:text-amber-400">
                     You must present the required ID to claim the document. All
                     fees must be settled before release.
                 </p>
@@ -70,11 +71,7 @@ const Notice = ({ doc }: { doc: any }) => {
 
 const RequestFormPage = () => {
     const navigate = useNavigate();
-    const [data, setData] = useState<any>({ data: [] });
-    const [error, setError] = useState<any>(null);
-
     const [submitLoading, setSubmitLoading] = useState<any>(false);
-    const [loading, setLoading] = useState<any>(true);
     const [inputError, setInputError] = useState<any>({});
     const [inputData, setInputData] = useState<any>({
         purpose: "",
@@ -87,29 +84,7 @@ const RequestFormPage = () => {
             doc_type_id: "",
         });
     };
-    useEffect(() => {
-        const request = async () => {
-            setLoading(true);
-            try {
-                const response = await axios({
-                    url: "http://192.168.122.80:8002/api/document-types",
-                    headers: {
-                        Accept: "application/json",
-                    },
-                });
-
-                setData(response.data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 1000);
-            }
-        };
-
-        request();
-    }, []);
+    const {isLoading: loading, data, error } = useFetch('api/document-types')
 
     if (error) {
         return (
@@ -126,7 +101,7 @@ const RequestFormPage = () => {
 
             const res = await axios({
                 method: "POST",
-                url: "http://192.168.122.80:8002/api/document-requests",
+                url: "http://192.168.123.140:8002/api/document-requests",
                 headers: {
                     Accept: "application/json",
                 },
@@ -140,8 +115,17 @@ const RequestFormPage = () => {
                 color: "success",
                 timeout: 3000,
                 shouldShowTimeoutProgress: true,
+                classNames: {
+                    base: "bg-green-400 border-none text-white",
+                    title: "text-white z-10",
+                    description: "text-white z-10",
+                    icon: "z-10",
+                    progressIndicator: "bg-green-200",
+                },
             });
         } catch (error) {
+            
+            console.error(error);
             if (axios.isAxiosError(error)) {
                 handleAxiosError(error, setInputError);
             } else {
@@ -154,14 +138,11 @@ const RequestFormPage = () => {
                 });
             }
 
-            console.error(error);
         } finally {
             resetData();
             setSubmitLoading(false);
         }
     };
-
-    console.log(inputError);
     const onDocumentSelectChange = (keys: any) => {
         const key = Array.from(keys)[0]; // single select
         setInputData((prev: any) => ({ ...prev, doc_type_id: key }));

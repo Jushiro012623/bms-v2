@@ -1,5 +1,4 @@
 import { Avatar, Button, Card, Spacer } from "@heroui/react";
-import React from "react";
 import { ContactIcon } from "../../components/icons/duotone/contact";
 import { MailIcon } from "../../components/icons/duotone/mail";
 import { HomeIcon } from "../../components/icons/duotone/home";
@@ -9,8 +8,8 @@ import { SmallArrowIcon } from "../../components/icons/singletone/small-arrow";
 const ProfilePage = () => {
     return (
         <div className="mx-auto mt-20 max-w-[65rem]">
-            <Card className="h-64 relative">
-                <div className="bg-gradient-to-r from-slate-700 to-slate-900 h-full" />
+            <div className="h-64 relative rounded-xl overflow-hidden">
+                <div className="bg-gradient-to-r from-primary-700 to-primary-800 h-full" />
                 <div className="absolute bottom-5 left-5 flex flex-row items-center gap-5">
                     <div className="">
                         <Avatar
@@ -21,12 +20,12 @@ const ProfilePage = () => {
                     </div>
                     <div>
                         <h1 className="font-bold text-2xl text-white ">
-                            X Infinity Dev
+                            Infinity Dev
                         </h1>
                         <h1 className="font-normal text-gray-50">Developer</h1>
                     </div>
                 </div>
-            </Card>
+            </div>
             <Spacer y={5} />
             <div className="flex gap-5">
                 <Card className="w-96 px-6 py-7">
@@ -47,7 +46,7 @@ const ProfilePage = () => {
                         <div className="flex items-center gap-5">
                             <MailIcon size={24} className="text-gray-900" />
                             <h1 className="text-sm text-gray-500">
-                                infinity.dev@gmail.com
+                                idevx@gmail.com
                             </h1>
                         </div>
                         <div className="flex items-center gap-5">

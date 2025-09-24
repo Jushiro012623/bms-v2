@@ -2,9 +2,12 @@ import { Pagination } from "@heroui/react";
 import React from "react";
 import type { BottomContentProps } from "./types";
 
-const BottomContent = ({ data, params, setParams }: BottomContentProps ) => {
-    const [currentPage, setCurrentPage] = React.useState<any>(params?.page || 1);
-    const count = data.meta.count;
+const BottomContent = ({ data, params, setParams }: BottomContentProps) => {
+    const [currentPage, setCurrentPage] = React.useState<any>(
+        params?.page || 1
+    );
+    const { from, to, total } = data.meta;
+    
     const lastPage = data.meta.last_page;
     const onRowsPerPageChange = (
         event: React.ChangeEvent<HTMLSelectElement>
@@ -19,8 +22,8 @@ const BottomContent = ({ data, params, setParams }: BottomContentProps ) => {
     };
     return (
         <div className="flex justify-between h-10 items-center">
-            <span className="text-default-400 text-small">
-                Total {count} results
+            <span className="text-default-400 text-small font-light">
+                Showing {from}–{to} of {total} results
             </span>
             <Pagination
                 onChange={onPaginateChange}
@@ -34,7 +37,7 @@ const BottomContent = ({ data, params, setParams }: BottomContentProps ) => {
                     cursor: "bg-primera",
                 }}
             />
-            <label className="flex items-center text-default-400 text-small">
+            <label className="flex items-center text-default-400 text-small font-light">
                 Rows per page:
                 <select
                     aria-label="select__rows_per_page"

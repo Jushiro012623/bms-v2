@@ -24,70 +24,26 @@ import { REQUEST_STATUS } from "../../../constants/status";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import BottomContent from "./bottom-content";
 import { useNavigate } from "react-router";
-import { Fragment, useEffect, useState } from "react";
-import axios from "axios";
-import type { ApiResponse } from "./types";
+import { Fragment, useState } from "react";
 import ErrorPage from "../../error-page";
+import useFetch from "../../../hooks/useFetch";
 
 export default function HistoryPage() {
     const navigate = useNavigate();
-    const [data, setData] = useState<ApiResponse>({
-        data: [],
-        meta: { count: 0, last_page: 1 },
-        link: {},
-    });
-    const [error, setError] = useState<any>(null);
-    const [docTypes, setDocTypes] = useState<any>([]);
-    const [loading, setLoading] = useState<any>(false);
     const [params, setParams] = useState<any>(null);
-    useEffect(() => {
-        const request = async () => {
-            try {
-                const response = await axios({
-                    url: "http://192.168.122.80:8002/api/document-types",
-                    headers: {
-                        Accept: "application/json",
-                    },
-                });
-                setDocTypes(response.data.data);
-            } catch (error) {
-                setError(error);
-            }
-        };
 
-        request();
-    }, []);
-    
-    useEffect(() => {
-        const request = async () => {
-            setLoading(true);
-            try {
-                const response = await axios({
-                    url: "http://192.168.122.80:8002/api/document-requests?include=documentType",
-                    headers: {
-                        Accept: "application/json",
-                    },
-                    params: params,
-                });
-                setData(response.data);
+    const { data: docTypes, error: docTypeError } =
+        useFetch("api/document-types");
+    const {
+        data,
+        error,
+        isLoading: loading,
+    } = useFetch("api/document-requests?include=documentType", params);
 
-                // console.log(response.data, docTypeResponse.data.data);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 1000);
-            }
-        };
-
-        request();
-    }, [params]);
-
-    if (error) {
+    if (error || docTypeError) {
         return (
             <ErrorPage
-                statusCode={error.response?.data.error.status || undefined}
+                statusCode={error?.response?.data?.error?.status || undefined}
             />
         );
     }
@@ -97,10 +53,10 @@ export default function HistoryPage() {
             <Table
                 maxTableHeight={500}
                 aria-label="Example table with dynamic content"
-                className="max-w-[85rem] mx-auto mt-24"
+                className="max-w-[85rem] mx-auto mt-24 "
                 checkboxesProps={{
                     classNames: {
-                        wrapper: "after:bg-primera text-background",
+                        wrapper: "after:bg-primera text-background ",
                     },
                 }}
                 selectionMode="multiple"
@@ -108,7 +64,7 @@ export default function HistoryPage() {
                     <TopContent
                         setParams={setParams}
                         params={params}
-                        docTypes={docTypes}
+                        docTypes={docTypes.data}
                     />
                 }
                 bottomContent={

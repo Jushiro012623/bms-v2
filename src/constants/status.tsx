@@ -1,8 +1,8 @@
 export const REQUEST_STATUS: any = {
-    pending: "bg-yellow-200 text-yellow-600",
-    approved: "bg-green-200 text-green-600",
-    rejected: "bg-red-300 text-red-600",
-    released: "bg-violet-300 text-violet-600",
+    pending: "bg-yellow-200 text-yellow-600 dark:bg-yellow-300 dark:text-yellow-800",
+    approved: "bg-green-200 text-green-600 dark:bg-green-300 dark:text-green-800",
+    rejected: "bg-red-300 text-red-600 dark:bg-red-400 dark:text-red-800",
+    released: "bg-violet-300 text-violet-600 dark:bg-violet-400 dark:text-violet-800",
 };
 export const REQUEST_STATUS_STRING: any = {
     pending: "1",

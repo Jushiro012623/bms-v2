@@ -106,14 +106,22 @@ const SidebarItem = memo(
             <li>
                 <Button
                     onPress={handlePress}
+                    isDisabled={item.id == "chat"}
                     className={`cursor-pointer flex w-full bg-transparent items-center justify-between rounded-lg px-3 py-2 text-sm ${
                         pathname === item.href
-                            ? "bg-accent-100 text-accent"
-                            : "text-gray-700 hover:bg-secondarya-50"
+                            ? "bg-accent-100 text-accent dark:bg-accent dark:text-accent-100"
+                            : "text-gray-700 hover:bg-secondarya-50 dark:hover:bg-secondarya-50/20  dark:text-gray-200"
                     }`}>
                     <span className="flex items-center gap-2">
                         {item.icon && (
-                            <item.icon size={16} className="text-accent" />
+                            <item.icon
+                                size={16}
+                                className={`${
+                                    pathname === item.href
+                                        ? "text-accent dark:text-gray-100"
+                                        : "text-accent"
+                                }`}
+                            />
                         )}
                         {item.label}
                     </span>
@@ -150,7 +158,6 @@ const SidebarItem = memo(
 const SidebarChild = memo(
     ({
         child,
-        activeItem,
         setActiveItem,
     }: {
         child: Item;
@@ -173,12 +180,19 @@ const SidebarChild = memo(
                     onPress={handlePress}
                     className={`cursor-pointer bg-transparent flex w-full justify-between items-center rounded-lg px-3 py-2 text-sm ${
                         pathname === child.href
-                            ? "bg-accent-100 text-accent"
-                            : "text-gray-700 hover:bg-secondarya-50"
+                            ? "bg-accent-100 text-accent dark:bg-accent dark:text-accent-100"
+                            : "text-gray-700 hover:bg-secondarya-50 dark:hover:bg-secondarya-50/20  dark:text-gray-200 "
                     }`}>
                     <span className="flex items-center gap-2">
                         {child.icon && (
-                            <child.icon size={16} className="text-accent" />
+                            <child.icon
+                                size={16}
+                                className={`${
+                                    pathname === child.href
+                                        ? "text-accent dark:text-gray-100"
+                                        : "text-accent"
+                                }`}
+                            />
                         )}
                         {child.label}
                     </span>

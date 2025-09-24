@@ -30,6 +30,7 @@ export const appPath: Record<string, { label: string; path: string }[]> = {
     ],
 };
 
+
 const router = createBrowserRouter([
     {
         path: "/",

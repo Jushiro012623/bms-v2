@@ -21,7 +21,6 @@ export const AlertIcon: React.FC<IconSvgProps> = ({
                 strokeLinejoin="round"></g>
             <g id="SVGRepo_iconCarrier">
                 {" "}
-                <rect width="24" height="24" fill="white"></rect>{" "}
                 <path
                     fillRule="evenodd"
                     clipRule="evenodd"

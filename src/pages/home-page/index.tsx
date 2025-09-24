@@ -25,7 +25,7 @@ const HomePage: React.FC = () => {
                         isDisabled={card.title == "Chats"}
                         isHoverable
                         key={index}
-                        className="bg-gradient-to-br from-white to-primera-100 cursor-pointer">
+                        className="bg-gradient-to-br from-white to-primera-100 dark:from-zinc-800 dark:to-zinc-900  cursor-pointer">
                         <CardBody className="flex flex-row gap-2">
                             <Image
                                 alt="HeroUI hero Image"

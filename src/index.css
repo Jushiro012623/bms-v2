@@ -1,24 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
 @plugin '../hero.ts';
 /* Note: You may need to change the path to fit your project structure */
 @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
 
-body{
+body {
     font-family: "Figtree", sans-serif;
+    @apply bg-white dark:bg-zinc-900;
 }
 
 @theme {
 
-    --font-inter: "Inter", sans-serif
-
+    --font-inter: "Inter", sans-serif;
+    --color-main-bg: #040307;
     --color-primera-50: #eff5fe;
     --color-primera-100: #e3ecfc;
     --color-primera-200: #ccdbf9;
     --color-primera-300: #acc3f5;
     --color-primera-400: #8ba2ee;
-    --color-primera: #6075e2; /* PRIMARY */ 
+    --color-primera: #6075e2; /* PRIMARY */
     --color-primera-600: #545fd7;
     --color-primera-700: #454dbd;
     --color-primera-800: #3a4199;
@@ -27,14 +28,14 @@ body{
 
     --color-second: #6a7282;
     --color-second-light: #d1d5dc;
-    
+
     --color-secondarya-50: #f3f5fb;
     --color-secondarya-100: #e3e7f6;
     --color-secondarya-200: #ced7ef;
-    --color-secondarya-300: #acbce4; 
+    --color-secondarya-300: #acbce4;
     --color-secondarya: #849ad6; /* SECONDARY */
     --color-secondarya-500: #677bca;
-    --color-secondarya-600: #4d5bba; /* SECONDARY */ 
+    --color-secondarya-600: #4d5bba; /* SECONDARY */
     --color-secondarya-700: #4951ac;
     --color-secondarya-800: #40448d;
     --color-secondarya-900: #373b71;
@@ -44,7 +45,7 @@ body{
     --color-accent-100: #daebff;
     --color-accent-200: #bdddff;
     --color-accent-300: #90c9ff;
-    --color-accent: #4da3ff; /* ACCENT */ 
+    --color-accent: #4da3ff; /* ACCENT */
     --color-accent-500: #3588fc;
     --color-accent-600: #1f68f1;
     --color-accent-700: #1752de;
@@ -52,4 +53,3 @@ body{
     --color-accent-900: #1a3c8e;
     --color-accent-950: #152656;
 }
-

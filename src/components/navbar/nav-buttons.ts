@@ -2,14 +2,15 @@ import { NotificationIcon } from "../icons/duotone/notification"
 import { ProfileIcon } from "../icons/duotone/profile"
 import { SecurityIcon } from "../icons/duotone/security";
 import { SettingsIcon } from "../icons/duotone/settings";
-import { SunIcon } from "../icons/duotone/sun"
+// import { SunIcon } from "../icons/duotone/sun"
 import { PhFlagIcon } from "../icons/flags/ph"
+import { ThemeSwitch } from "../theme-switch/switch";
 
 export default [
     { id: "flag", icon: PhFlagIcon },
     { id: "notifications", icon: NotificationIcon },
     { id: "profile", icon: ProfileIcon },
-    { id: "themeToggle", icon: SunIcon },
+    { id: "themeToggle", icon: ThemeSwitch },
 ];
 
 export const drawer_links = [

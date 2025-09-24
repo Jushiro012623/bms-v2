@@ -20,10 +20,9 @@ import { HiMiniTrash } from "react-icons/hi2";
 import { BiPlus } from "react-icons/bi";
 import { useNavigate } from "react-router";
 
-export const TopContent = ({ params, setParams,docTypes }: any) => {
+export const TopContent = ({ params, setParams, docTypes }: any) => {
     const [documents, setDocuments] = React.useState<any>(new Set([]));
     const [searchText, setSearchText] = React.useState(params?.search || "");
-
 
     const navigate = useNavigate();
 
@@ -88,15 +87,21 @@ export const TopContent = ({ params, setParams,docTypes }: any) => {
                                 <div className="flex items-center space-x-2">
                                     <span>{item.label}</span>
                                     <Chip
-                                        className={`text-xs ${ REQUEST_STATUS[item.id] ?? "bg-primera-300 text-primera-600" } `} 
+                                        className={`text-xs ${
+                                            REQUEST_STATUS[item.id] ??
+                                            "bg-primera-300 text-primera-600"
+                                        } `}
                                         radius="sm">
                                         0
                                     </Chip>
                                 </div>
-                            } />
+                            }
+                        />
                     )}
                 </Tabs>
-                <Button className="bg-primera text-white" onPress={() => navigate('/documents/form-request')}>
+                <Button
+                    className="bg-primera text-white"
+                    onPress={() => navigate("/documents/form-request")}>
                     Create <BiPlus size={18} />
                 </Button>
             </div>
@@ -112,7 +117,7 @@ export const TopContent = ({ params, setParams,docTypes }: any) => {
                     selectionMode="multiple"
                     onSelectionChange={onDocumentSelectChange}>
                     {docTypes.map((docType: any) => (
-                        <SelectItem key={docType.name}>{docType.name}</SelectItem>
+                        <SelectItem key={docType.id}>{docType.name}</SelectItem>
                     ))}
                 </Select>
                 <Input
@@ -139,52 +144,63 @@ export const TopContent = ({ params, setParams,docTypes }: any) => {
                     startContent={
                         <SearchIcon
                             size={18}
-                            className="text-black/50 mb-0.5  pointer-events-none shrink-0"
+                            className="text-black/50 dark:text-gray-100 mb-0.5  pointer-events-none shrink-0"
                         />
                     }
                 />
             </div>
 
             {documents.size !== 0 && (
-                <div className="flex items-center gap-2">
-                    <Chip
-                        radius="sm"
-                        variant="bordered"
-                        className="border-1 py-5">
-                        <div className="flex gap-2 items-center">
-                            <span>Selected: </span>
-                            {Array.from(documents).map((item: any) => (
-                                <Chip
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        const newDocs = new Set(documents);
-                                        newDocs.delete(item);
-                                        onDocumentSelectChange(newDocs);
-                                    }}
-                                    size="sm"
-                                    key={item}
-                                    radius="sm"
-                                    className="bg-primera text-white">
-                                    <div className="flex items-center gap-1">
-                                        {item.toUpperCase()}{" "}
-                                        <IoIosCloseCircle
-                                            size={15}
-                                            className="hover:text-gray-200 cursor-pointer"
-                                        />
-                                    </div>
-                                </Chip>
-                            ))}
+                <div className="flex  gap-4 flex-col">
+                    <div className="border-gray-200 rounded-lg border-1 py-5 w-full !h-auto !flex !flex-row ">
+                        <div className="block w-fit px-3 text-sm">
+                            Selected:
                         </div>
-                    </Chip>
-                    <HiMiniTrash
-                        size={20}
-                        className="text-red-400 cursor-pointer"
-                        onClick={() => {
+                        <div className="flex gap-2 items-center flex-wrap">
+                            {Array.from(documents).map((id: any) => {
+                                const doc = docTypes.find(
+                                    (d: any) => d.id == id
+                                );
+                                return (
+                                    <Chip
+                                        size="sm"
+                                        key={id}
+                                        radius="sm"
+                                        className="bg-primera text-white ">
+                                        <div className="flex items-center gap-1">
+                                            {doc?.name.toUpperCase() ?? id}{" "}
+                                            <IoIosCloseCircle
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    const newDocs = new Set(
+                                                        documents
+                                                    );
+                                                    newDocs.delete(id);
+                                                    onDocumentSelectChange(
+                                                        newDocs
+                                                    );
+                                                }}
+                                                size={15}
+                                                className="hover:text-gray-200 cursor-pointer"
+                                            />
+                                        </div>
+                                    </Chip>
+                                );
+                            })}
+                        </div>
+                    </div>
+                    <Button
+                        variant="light"
+                        color="danger"
+                        className="w-fit flex text-red-400 items-center cursor-pointer"
+                        onPress={() => {
                             const { only, ...newParams } = params;
                             setDocuments(new Set());
                             setParams({ ...newParams });
-                        }}
-                    />
+                        }}>
+                        <HiMiniTrash size={20} className="text-red-400" />
+                        <p className="font-semibold text-sm">Clear</p>
+                    </Button>
                 </div>
             )}
         </div>
