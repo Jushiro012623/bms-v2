@@ -6,7 +6,7 @@ import {
     Image,
 } from "@heroui/react";
 import { Navigate, useLocation, useNavigate } from "react-router";
-import { capitalizeFirstLetter } from "../../../helpers/getNestedValueTable";
+import { capitalizeFirstLetter, onlyDate } from "../../../helpers/getNestedValueTable";
 import { REQUEST_STATUS } from "../../../constants/status";
 
 const ViewForm = () => {
@@ -98,12 +98,12 @@ const ViewForm = () => {
                         <div className="space-y-4">
                             <TimelineItem
                                 label="Request Posted"
-                                value={data?.request_date}
+                                value={onlyDate(data?.request_date)}
                             />
-                            <TimelineItem label="Approved Date" value="N/A" />
+                            <TimelineItem label="Approved Date" value={onlyDate(data?.approved_date) || 'N/A'} />
                             <TimelineItem
                                 label="Released Date"
-                                value={data?.released_date || "N/A"}
+                                value={onlyDate(data?.released_date) || "N/A"}
                             />
                             <TimelineItem label="Issued Date" value="N/A" />
                         </div>

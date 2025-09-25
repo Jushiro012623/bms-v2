@@ -1,6 +1,6 @@
 import { Spacer, User } from "@heroui/react";
 import { SidebarLinks } from "./sidebar-links-component";
-import { overviewItems, supportItems } from "./items";
+import { managementItems, overviewItems, supportItems } from "./items";
 import { useState } from "react";
 import { Logo } from "../icons/duotone/logo";
 
@@ -21,6 +21,13 @@ const Sidebar = () => {
                 <SidebarLinks
                     tab="OVERVIEW"
                     items={overviewItems}
+                    activeItem={activeItem}
+                    setActiveItem={setActiveItem}
+                />
+                <Spacer y={7} />
+                <SidebarLinks
+                    tab="MANAGEMENT"
+                    items={managementItems}
                     activeItem={activeItem}
                     setActiveItem={setActiveItem}
                 />

@@ -155,9 +155,8 @@ const RequestFormPage = () => {
                     shouldShowTimeoutProgress: true,
                 });
             }
-        } finally {
-            resetData();
             setSubmitLoading(false);
+            resetData();
         }
     };
     const onDocumentSelectChange = (keys: any) => {

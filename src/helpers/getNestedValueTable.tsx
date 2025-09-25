@@ -8,8 +8,8 @@ export const capitalizeFirstLetter = (str: any) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const onlyDate = (date: any) =>
-    date.toLocaleDateString("en-US", {
+export const onlyDate = (date: any) => ///2025-09-25 16:13:29
+    new Date(date).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",

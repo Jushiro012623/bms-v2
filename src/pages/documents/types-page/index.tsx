@@ -5,13 +5,14 @@ import {
     Chip,
     CardHeader,
     Skeleton,
+    Spacer,
 } from "@heroui/react";
 import ErrorPage from "../../error-page";
 import useFetch from "../../../hooks/useFetch";
 import { useNavigate } from "react-router";
 
 export default function TypesPage() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { isLoading: loading, data, error } = useFetch("api/document-types");
 
     if (error) {
@@ -22,21 +23,32 @@ export default function TypesPage() {
         );
     }
 
+    
+
     return (
         <main className="max-w-[70rem] mx-auto mt-20 px-4 mb-10">
             <div className="text-center mb-12">
-                <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-primera to-primera-700 text-transparent">
-                    Document Types
-                </h1>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                    Browse available barangay documents and services. Fees and
-                    requirements are shown for each type.
-                </p>
+                <Skeleton isLoaded={!loading} className="rounded-md">
+                    <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-primera to-primera-700 text-transparent">
+                        Document Types
+                    </h1>
+                </Skeleton>
+                <Spacer y={'px'} />
+                <Skeleton isLoaded={!loading} className="rounded-md">
+                    <p className="mt-2 text-gray-600 dark:text-gray-400">
+                        Browse available barangay documents and services. Fees
+                        and requirements are shown for each type.
+                    </p>
+                </Skeleton>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data?.data.map((item: any) => (
                     <Card
-                        onPress={() => navigate('/documents/form-request', {state: {docTypeID: item.id }})}
+                        onPress={() =>
+                            navigate("/documents/form-request", {
+                                state: { docTypeID: item.id },
+                            })
+                        }
                         isDisabled={!loading && item.status !== "active"}
                         key={item.id}
                         isHoverable={!loading && item.status === "active"}
