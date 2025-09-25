@@ -8,7 +8,7 @@ const useFetch = (uri: string, params: any = null) => {
         meta: { from: 0, last_page: 1, total: 0, to: 0 },
         link: {},
     });
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<any>(null);
 
     useEffect(() => {

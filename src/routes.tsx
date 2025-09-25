@@ -7,29 +7,8 @@ import TypesPages from "./pages/documents/types-page";
 import ErrorPage from "./pages/error-page";
 import ViewForm from "./pages/documents/view-form";
 import ProfilePage from "./pages/profile-page";
-
-export const appPath: Record<string, { label: string; path: string }[]> = {
-    "/documents": [
-        { label: "Document", path: "/documents" },
-        { label: "History", path: "/documents" }
-    ],
-    "/documents/form-request": [
-        { label: "Document", path: "/documents" },
-        { label: "Form Request", path: "/documents/form-request" },
-    ],
-    "/documents/availables": [
-        { label: "Document", path: "/documents" },
-        { label: "Available", path: "/documents/availables" },
-    ],
-    "/documents/view": [
-        { label: "Document", path: "/documents" },
-        { label: "View Form", path: "/documents/view" },
-    ],
-    "/profile": [
-        { label: "Profile", path: "/profile" },
-    ],
-};
-
+import FAQPage from "./pages/faq-page";
+import PaymentGatewayPage from "./pages/payment-page";
 
 const router = createBrowserRouter([
     {
@@ -47,6 +26,8 @@ const router = createBrowserRouter([
                 ],
             },
             { path: '/profile', Component: ProfilePage },
+            { path: '/faq', Component: FAQPage },
+            { path: '/payment-gateway', Component: PaymentGatewayPage },
         ],
     },
     {

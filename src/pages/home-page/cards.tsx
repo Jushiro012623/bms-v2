@@ -8,7 +8,7 @@ export const cards = [
         href: "/documents/form-request",
     },
     {
-        title: "View Documents",
+        title: "My Requests",
         description:
             "Access and view your approved barangay documents anytime, anywhere.",
         image: "https://images.unsplash.com/photo-1508780709619-79562169bc64",

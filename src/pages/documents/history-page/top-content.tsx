@@ -20,7 +20,12 @@ import { HiMiniTrash } from "react-icons/hi2";
 import { BiPlus } from "react-icons/bi";
 import { useNavigate } from "react-router";
 
-export const TopContent = ({ params, setParams, docTypes }: any) => {
+export const TopContent = ({
+    params,
+    setParams,
+    docTypes,
+    selectedKeys,
+}: any) => {
     const [documents, setDocuments] = React.useState<any>(new Set([]));
     const [searchText, setSearchText] = React.useState(params?.search || "");
 
@@ -99,11 +104,25 @@ export const TopContent = ({ params, setParams, docTypes }: any) => {
                         />
                     )}
                 </Tabs>
-                <Button
-                    className="bg-primera text-white"
-                    onPress={() => navigate("/documents/form-request")}>
-                    Create <BiPlus size={18} />
-                </Button>
+                <div className="flex gap-2">
+                    {selectedKeys && selectedKeys.length > 0 && (
+                        <Button
+                            variant="bordered"
+                            className=" text-primera"
+                            onPress={() => {
+                                navigate("/payment-gateway", {
+                                    state: { data: selectedKeys },
+                                });
+                            }}>
+                            Pay Now
+                        </Button>
+                    )}
+                    <Button
+                        className="bg-primera text-white"
+                        onPress={() => navigate("/documents/form-request")}>
+                        Request <BiPlus size={18} />
+                    </Button>
+                </div>
             </div>
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                 <Select

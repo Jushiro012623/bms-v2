@@ -1,8 +1,10 @@
-import { useState, useCallback, memo, useEffect } from "react";
+import { useState, memo, useEffect, useRef } from "react";
 import { SmallArrowIcon } from "../icons/singletone/small-arrow";
 import type { Item } from "./types";
 import { Button } from "@heroui/react";
 import { useLocation, useNavigate } from "react-router";
+import { appPath } from "../../constants/app-path";
+import SEO from "../seo";
 
 type SidebarLinksProps = {
     tab: string;
@@ -40,8 +42,17 @@ export const SidebarLinks = ({
         }
     }, [pathname, items, setActiveItem]);
 
+    const crumbs = appPath[pathname] || [];
+    const title =
+        crumbs.length > 0 ? crumbs.map((c) => c.label).join(" - ") : "BRMS App";
+    const description =
+        crumbs.length > 0
+            ? `You are viewing ${crumbs[crumbs.length - 1].label} in BMS App.`
+            : "BRMS application sidebar navigation.";
+
     return (
         <>
+            <SEO title={title} description={description} />
             {/* Section header */}
             <button
                 onClick={() => setOpenSection(!openSection)}
@@ -92,6 +103,16 @@ const SidebarItem = memo(
     }) => {
         const navigate = useNavigate();
         const { pathname } = useLocation();
+        const submenuRef = useRef<HTMLUListElement>(null);
+        const [height, setHeight] = useState<string>("0px");
+
+        useEffect(() => {
+            if (openItem === item.id && submenuRef.current) {
+                setHeight(submenuRef.current.scrollHeight + "px");
+            } else {
+                setHeight("0px");
+            }
+        }, [openItem, item.id, item.children]);
 
         const handlePress = () => {
             if (item.children) {
@@ -106,7 +127,7 @@ const SidebarItem = memo(
             <li>
                 <Button
                     onPress={handlePress}
-                    isDisabled={item.id == "chat"}
+                    isDisabled={item.id == "chat" || item.id == "contact" }
                     className={`cursor-pointer flex w-full bg-transparent items-center justify-between rounded-lg px-3 py-2 text-sm ${
                         pathname === item.href
                             ? "bg-accent-100 text-accent dark:bg-accent dark:text-accent-100"
@@ -137,9 +158,17 @@ const SidebarItem = memo(
                     )}
                 </Button>
 
-                {item.children && openItem === item.id && (
-                    <ul className="ml-6 mt-1 space-y-1 pl-3">
-                        {item.children.map((child) => (
+                <ul
+                    ref={submenuRef}
+                    style={{
+                        height,
+                        overflow: "hidden",
+                        transition: "height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    }}
+                    className="ml-6 mt-1 space-y-1 pl-3">
+                    {item.children &&
+                        openItem === item.id &&
+                        item.children.map((child) => (
                             <SidebarChild
                                 key={child.id}
                                 child={child}
@@ -147,8 +176,7 @@ const SidebarItem = memo(
                                 setActiveItem={setActiveItem}
                             />
                         ))}
-                    </ul>
-                )}
+                </ul>
             </li>
         );
     }

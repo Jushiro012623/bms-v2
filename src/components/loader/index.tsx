@@ -13,7 +13,7 @@ const Loader = () => {
     }, []);
 
     return (
-        <div className="flex flex-col justify-center items-center fixed top-0 left-0 z-[100] h-dvh w-screen overflow-hidden bg-violet-50">
+        <div className="flex flex-col justify-center items-center fixed top-0 left-0 z-[100] h-dvh w-screen overflow-hidden bg-gray-50 dark:bg-zinc-900">
             {/* Top Loading Bar */}
             <LoadingBar color="#6075e2" ref={topBarRef} shadow={true} />
 

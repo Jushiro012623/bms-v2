@@ -8,10 +8,11 @@ import {
 } from "@heroui/react";
 import ErrorPage from "../../error-page";
 import useFetch from "../../../hooks/useFetch";
+import { useNavigate } from "react-router";
 
 export default function TypesPage() {
-    
-    const {isLoading: loading, data, error } = useFetch('api/document-types')
+    const navigate = useNavigate()
+    const { isLoading: loading, data, error } = useFetch("api/document-types");
 
     if (error) {
         return (
@@ -23,9 +24,19 @@ export default function TypesPage() {
 
     return (
         <main className="max-w-[70rem] mx-auto mt-20 px-4 mb-10">
+            <div className="text-center mb-12">
+                <h1 className="text-3xl font-bold bg-clip-text bg-gradient-to-r from-primera to-primera-700 text-transparent">
+                    Document Types
+                </h1>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">
+                    Browse available barangay documents and services. Fees and
+                    requirements are shown for each type.
+                </p>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data?.data.map((item: any) => (
                     <Card
+                        onPress={() => navigate('/documents/form-request', {state: {docTypeID: item.id }})}
                         isDisabled={!loading && item.status !== "active"}
                         key={item.id}
                         isHoverable={!loading && item.status === "active"}
@@ -71,8 +82,8 @@ export default function TypesPage() {
                                     <Chip
                                         className={`${
                                             item.fee == 0
-                                                ? "bg-green-400 text-green-800"
-                                                : "bg-accent text-accent-800"
+                                                ? "dark:bg-green-400 dark:text-green-800 bg-green-200 text-green-600"
+                                                : "dark:bg-accent dark:text-accent-800 bg-accent-200 text-accent-600"
                                         } font-bold px-3`}
                                         size="sm"
                                         radius="sm">
@@ -94,7 +105,7 @@ export default function TypesPage() {
                             <Skeleton
                                 isLoaded={!loading}
                                 className="rounded-md">
-                                <div className="text-xs text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-zinc-900/50 p-2 rounded-md">
+                                <div className="text-xs text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-zinc-900/30 p-2 rounded-md">
                                     <strong>Requirements:</strong>{" "}
                                     {item.requirements}
                                 </div>

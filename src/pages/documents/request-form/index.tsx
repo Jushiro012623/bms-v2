@@ -16,7 +16,7 @@ import {
 import { AlertIcon } from "../../../components/icons/singletone/alert";
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { handleAxiosError } from "../../../helpers/errorHandling";
 import ErrorPage from "../../error-page";
 import useFetch from "../../../hooks/useFetch";
@@ -35,7 +35,10 @@ const Notice = ({ doc }: { doc: any }) => {
                         Please take note before submitting your request
                     </h1>
                 </div>
-                <AlertIcon size={40} className="text-amber-500 dark:text-amber-400 bg-transparent" />
+                <AlertIcon
+                    size={40}
+                    className="text-amber-500 dark:text-amber-400 bg-transparent"
+                />
             </CardHeader>
             <CardBody className="overflow-visible py-8">
                 <div className="p-4 bg-warning-50 dark:bg-zinc-800 border-l-4 border-amber-500 dark:border-amber-400 rounded-md text-sm text-gray-800 dark:text-gray-100 space-y-3">
@@ -59,7 +62,7 @@ const Notice = ({ doc }: { doc: any }) => {
                     </div>
                 </div>
             </CardBody>
-        <CardFooter>
+            <CardFooter>
                 <p className="italic text-xs text-amber-500 dark:text-amber-400">
                     You must present the required ID to claim the document. All
                     fees must be settled before release.
@@ -73,9 +76,14 @@ const RequestFormPage = () => {
     const navigate = useNavigate();
     const [submitLoading, setSubmitLoading] = useState<any>(false);
     const [inputError, setInputError] = useState<any>({});
+
+    const location = useLocation();
+
+    const { docTypeID } = location.state || {};
+
     const [inputData, setInputData] = useState<any>({
         purpose: "",
-        doc_type_id: "",
+        doc_type_id: docTypeID ? String(docTypeID) : "",
     });
 
     const resetData = () => {
@@ -84,7 +92,7 @@ const RequestFormPage = () => {
             doc_type_id: "",
         });
     };
-    const {isLoading: loading, data, error } = useFetch('api/document-types')
+    const { isLoading: loading, data, error } = useFetch("api/document-types");
 
     if (error) {
         return (
@@ -107,7 +115,18 @@ const RequestFormPage = () => {
                 },
                 data: inputData,
             });
-            navigate("/documents");
+
+            const item = await res.data.data;
+            
+            if(item.document_type.fee != Number(0)){
+                navigate("/payment-gateway", {
+                    state: {
+                        data: item,
+                    },
+                });
+            }else{
+                navigate("/documents")
+            }
 
             addToast({
                 title: "Success",
@@ -124,7 +143,6 @@ const RequestFormPage = () => {
                 },
             });
         } catch (error) {
-            
             console.error(error);
             if (axios.isAxiosError(error)) {
                 handleAxiosError(error, setInputError);
@@ -137,7 +155,6 @@ const RequestFormPage = () => {
                     shouldShowTimeoutProgress: true,
                 });
             }
-
         } finally {
             resetData();
             setSubmitLoading(false);
@@ -171,8 +188,8 @@ const RequestFormPage = () => {
                             className="rounded-lg w-full"
                             isLoaded={!loading}>
                             <h1 className="font-light text-sm">
-                                Quickly request and process the documents you
-                                need.
+                                Fill in the details below to request a barangay
+                                document.
                             </h1>
                         </Skeleton>
                     </CardHeader>
@@ -181,6 +198,7 @@ const RequestFormPage = () => {
                             className="rounded-lg w-full"
                             isLoaded={!loading}>
                             <Select
+                                defaultSelectedKeys={[docTypeID || ""]}
                                 selectedKeys={
                                     new Set(
                                         inputData?.doc_type_id

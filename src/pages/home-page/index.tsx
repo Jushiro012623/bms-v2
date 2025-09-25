@@ -9,9 +9,8 @@ const HomePage: React.FC = () => {
         <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
             <div className="text-center mb-10">
                 <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white">
-                    Welcome to the{" "}
                     <span className="bg-clip-text bg-gradient-to-r from-primera to-primera-700 text-transparent">
-                        Barangay Document System
+                        Barangay Request Management System
                     </span>
                 </h1>
                 <p className="mt-2 text-gray-600 dark:text-gray-400">

@@ -9,21 +9,37 @@ import { SearchIcon } from "../icons/singletone/search";
 import navButtons from "./nav-buttons";
 import { HomeIcon } from "../icons/duotone/home";
 import { useLocation, useNavigate } from "react-router";
-import { appPath } from "../../routes";
 import ProfileAvatar from "./drawer";
+
+import { useTheme } from "@heroui/use-theme";
+import { appPath } from "../../constants/app-path";
 const Navbar = () => {
+    const { theme, setTheme } = useTheme();
+
     const { pathname } = useLocation();
     const navigate = useNavigate();
 
     const crumbs = appPath[pathname] || [];
 
+    const onIconPress = (id: string) => {
+        switch (id) {
+            case "themeToggle":
+                setTheme(theme === "light" ? "dark" : "light");
+                break;
+            default:
+                break;
+        }
+    };
     return (
         <nav className="h-20 w-full sticky top-0 z-50 border-b border-gray-100 dark:border-zinc-800 px-10 backdrop-blur-md">
             <div className="flex-1 h-full flex justify-between">
                 <div className="flex flex-col justify-center text-sm">
                     <Breadcrumbs>
                         <BreadcrumbItem onClick={() => navigate("/")}>
-                            <HomeIcon className="text-second dark:text-accent-100" size={20} />
+                            <HomeIcon
+                                className="text-second dark:text-accent-100"
+                                size={20}
+                            />
                         </BreadcrumbItem>
                         {crumbs.map((item, index) => (
                             <BreadcrumbItem
@@ -58,11 +74,16 @@ const Navbar = () => {
                         <Button
                             key={id}
                             isIconOnly
+                            onPress={() => onIconPress(id)}
                             radius="full"
                             size="sm"
                             variant="light"
                             className="min-w-0 size-10 p-0 ">
-                            <Icon size={23} className="text-second dark:text-gray-100" />
+                            <Icon
+                                theme={theme}
+                                size={23}
+                                className="text-second dark:text-gray-100"
+                            />
                         </Button>
                     ))}
 

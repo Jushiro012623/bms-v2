@@ -12,6 +12,7 @@ import {
     DropdownItem,
     Chip,
     Spinner,
+    type Selection,
 } from "@heroui/react";
 import { columns } from "./items";
 import { TopContent } from "./top-content";
@@ -31,7 +32,7 @@ import useFetch from "../../../hooks/useFetch";
 export default function HistoryPage() {
     const navigate = useNavigate();
     const [params, setParams] = useState<any>(null);
-
+    const [selectedKeys, setSelectedKeys] = useState<any>();
     const { data: docTypes, error: docTypeError } =
         useFetch("api/document-types");
     const {
@@ -48,20 +49,41 @@ export default function HistoryPage() {
         );
     }
 
+    const handleSelectedKeys = (keys: Selection) => {
+        if (keys == "all") {
+            const pendingItems = data.data.filter(
+                (item: any) => item.status?.toLowerCase() === "pending" && Number(item.document_type.fee ) > 0
+            );
+            setSelectedKeys(pendingItems);
+            return;
+        }
+
+        const selectedIds = Array.from(keys);
+
+        const pendingItems = data.data.filter(
+            (item: any) =>
+                selectedIds.includes(String(item.id)) &&
+                item.status?.toLowerCase() === "pending" && Number(item.document_type.fee ) > 0
+        );
+        setSelectedKeys(pendingItems);
+    };
+
     return (
         <Fragment>
             <Table
                 maxTableHeight={500}
                 aria-label="Example table with dynamic content"
-                className="max-w-[85rem] mx-auto mt-24 "
+                className="max-w-[85rem] mx-auto mt-24"
+                onSelectionChange={handleSelectedKeys}
                 checkboxesProps={{
                     classNames: {
-                        wrapper: "after:bg-primera text-background ",
+                        wrapper: "after:bg-primera text-background",
                     },
                 }}
                 selectionMode="multiple"
                 topContent={
                     <TopContent
+                        selectedKeys={selectedKeys}
                         setParams={setParams}
                         params={params}
                         docTypes={docTypes.data}
@@ -81,11 +103,11 @@ export default function HistoryPage() {
                             align={column.key === "action" ? "end" : "start"}
                             width={
                                 column.key === "action"
-                                    ? 80 // compact for action
+                                    ? 80
                                     : column.key === "status"
-                                    ? 150 // compact for chip
+                                    ? 150
                                     : column.key === "request_date"
-                                    ? 250 // compact for chip
+                                    ? 250
                                     : undefined
                             }
                             className={
@@ -95,6 +117,7 @@ export default function HistoryPage() {
                         </TableColumn>
                     )}
                 </TableHeader>
+
                 <TableBody<any>
                     items={data.data}
                     emptyContent={"No rows to display."}
@@ -108,7 +131,7 @@ export default function HistoryPage() {
                                     columnKey.toString()
                                 );
                                 return (
-                                    <TableCell className={`py-5 relative`}>
+                                    <TableCell className="py-5 relative">
                                         {(() => {
                                             switch (columnKey) {
                                                 case "status":
@@ -172,12 +195,30 @@ export default function HistoryPage() {
                                                                         }>
                                                                         View
                                                                     </DropdownItem>
-                                                                    <DropdownItem key="edit">
-                                                                        Edit
-                                                                    </DropdownItem>
-                                                                    <DropdownItem key="delete">
-                                                                        Delete
-                                                                    </DropdownItem>
+
+                                                                    {Number(
+                                                                        item
+                                                                            .document_type
+                                                                            .fee
+                                                                    ) !== 0 &&
+                                                                    item.status ===
+                                                                        "pending" ? (
+                                                                        <DropdownItem
+                                                                            key="pay"
+                                                                            onPress={() =>
+                                                                                navigate(
+                                                                                    `/payment-gateway`,
+                                                                                    {
+                                                                                        state: {
+                                                                                            data: item,
+                                                                                        },
+                                                                                    }
+                                                                                )
+                                                                            }>
+                                                                            Pay
+                                                                            Now
+                                                                        </DropdownItem>
+                                                                    ) : null}
                                                                 </DropdownMenu>
                                                             </Dropdown>
                                                         </div>

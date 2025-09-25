@@ -2,22 +2,21 @@ import { useState, useEffect, type FC } from "react";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { useSwitch, type SwitchProps } from "@heroui/switch";
 import clsx from "clsx";
-import { useTheme } from "@heroui/use-theme";
 import { SunIcon } from "../icons/duotone/sun";
 import { GoMoon } from "react-icons/go";
 
 export interface ThemeSwitchProps {
     className?: string;
     classNames?: SwitchProps["classNames"];
+    theme: string;
 }
 
 export const ThemeSwitch: FC<ThemeSwitchProps> = ({
     className,
     classNames,
+    theme,
 }) => {
     const [isMounted, setIsMounted] = useState(false);
-
-    const { theme, setTheme } = useTheme();
 
     const {
         Component,
@@ -28,7 +27,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
         getWrapperProps,
     } = useSwitch({
         isSelected: theme === "light",
-        onChange: () => setTheme(theme === "light" ? "dark" : "light"),
+        // onChange: () => setTheme(theme === "light" ? "dark" : "light"),
     });
 
     useEffect(() => {
@@ -53,25 +52,18 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({
             <VisuallyHidden>
                 <input {...getInputProps()} />
             </VisuallyHidden>
-            <div
-                {...getWrapperProps()}
-                className={slots.wrapper({
-                    class: clsx(
-                        [
-                            "w-auto h-auto",
-                            "bg-transparent",
-                            "rounded-lg",
-                            "flex items-center justify-center",
-                            "group-data-[selected=true]:bg-transparent",
-                            "!text-default-500",
-                            "pt-px",
-                            "px-0",
-                            "mx-0",
-                        ],
-                        classNames?.wrapper
-                    ),
-                })}>
-                {isSelected ? <GoMoon size={22} className="text-second dark:text-gray-100"/> : <SunIcon size={22} className="text-second dark:text-gray-100"/>}
+            <div>
+                {isSelected ? (
+                    <GoMoon
+                        size={22}
+                        className="text-second dark:text-gray-100"
+                    />
+                ) : (
+                    <SunIcon
+                        size={22}
+                        className="text-second dark:text-gray-100"
+                    />
+                )}
             </div>
         </Component>
     );

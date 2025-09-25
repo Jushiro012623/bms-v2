@@ -11,12 +11,9 @@ const App = () => {
         return () => clearTimeout(timer);
     }, []);
 
-    if (fullPageLoading) {
-        return <Loader />;
-    }
-
     return (
         <HeroUIProvider>
+            {fullPageLoading && <Loader />}
             <ToastProvider placement="bottom-right" toastOffset={5} />
             <AppRouter />
         </HeroUIProvider>

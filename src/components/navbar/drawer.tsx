@@ -45,7 +45,7 @@ export default function ProfileAvatar() {
                                     }}
                                 />
                                 <Spacer y={6} />
-                                <p className="text-lg font-bold text-gray-700">
+                                <p className="text-lg font-bold text-gray-700 dark:text-gray-300">
                                     Infinity Dev
                                 </p>
                                 <p className="text-sm text-gray-400 font-normal">
