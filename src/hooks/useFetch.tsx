@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import type { ApiResponse } from "../pages/documents/history-page/types";
+import { Api } from "../service/api/request";
 
 const useFetch = (uri: string, params: any = null) => {
     const [data, setData] = useState<ApiResponse>({
@@ -14,13 +14,13 @@ const useFetch = (uri: string, params: any = null) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios({
-                    url: `http://192.168.123.140:8002/${uri}`,
+                const response = await Api({
                     method: "GET",
+                    url: uri,
                     params: params,
                 });
 
-                const data = await response.data
+                const data = await response.data;
                 setData(data);
             } catch (error: any) {
                 setError(error);

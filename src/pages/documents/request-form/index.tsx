@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router";
 import { handleAxiosError } from "../../../helpers/errorHandling";
 import ErrorPage from "../../error-page";
 import useFetch from "../../../hooks/useFetch";
+import { Api } from "../../../service/api/request";
 
 const Notice = ({ doc }: { doc: any }) => {
     if (!doc) return null;
@@ -92,7 +93,7 @@ const RequestFormPage = () => {
             doc_type_id: "",
         });
     };
-    const { isLoading: loading, data, error } = useFetch("api/document-types");
+    const { isLoading: loading, data, error } = useFetch("document-types");
 
     if (error) {
         return (
@@ -103,16 +104,15 @@ const RequestFormPage = () => {
     }
 
     const onSubmit = async (event: any) => {
+
         setSubmitLoading(true);
+        
         try {
             event?.preventDefault();
 
-            const res = await axios({
+            const res = await Api({
                 method: "POST",
-                url: "http://192.168.123.140:8002/api/document-requests",
-                headers: {
-                    Accept: "application/json",
-                },
+                url: "document-requests",
                 data: inputData,
             });
 

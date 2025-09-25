@@ -16,6 +16,7 @@ import {
 import { drawer_links } from "./nav-buttons";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router";
+import React from "react";
 
 export default function ProfileAvatar() {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -54,8 +55,8 @@ export default function ProfileAvatar() {
                             </DrawerHeader>
                             <DrawerBody>
                                 <Divider />
-                                {drawer_links.map((link) => (
-                                    <>
+                                {drawer_links.map((link, i) => (
+                                    <React.Fragment key={i}>
                                         <Button
                                             onPress={() => {navigate(link.href); onClose()}}
                                             className={`cursor-pointer flex w-full bg-transparent items-center justify-between rounded-lg px-3 py-2 text-sm 
@@ -75,7 +76,7 @@ export default function ProfileAvatar() {
                                                 {link.label}
                                             </span>
                                         </Button>
-                                    </>
+                                    </React.Fragment>
                                 ))}
                                 <Divider />
                                 <Spacer y={2} />

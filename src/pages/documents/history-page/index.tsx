@@ -34,12 +34,12 @@ export default function HistoryPage() {
     const [params, setParams] = useState<any>(null);
     const [selectedKeys, setSelectedKeys] = useState<any>();
     const { data: docTypes, error: docTypeError } =
-        useFetch("api/document-types");
+        useFetch("document-types");
     const {
         data,
         error,
         isLoading: loading,
-    } = useFetch("api/document-requests?include=documentType", params);
+    } = useFetch("document-requests?include=documentType", params);
 
     if (error || docTypeError) {
         return (

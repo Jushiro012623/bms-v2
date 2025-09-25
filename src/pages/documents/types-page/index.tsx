@@ -13,7 +13,7 @@ import { useNavigate } from "react-router";
 
 export default function TypesPage() {
     const navigate = useNavigate();
-    const { isLoading: loading, data, error } = useFetch("api/document-types");
+    const { isLoading: loading, data, error } = useFetch("document-types");
 
     if (error) {
         return (
@@ -22,9 +22,6 @@ export default function TypesPage() {
             />
         );
     }
-
-    
-
     return (
         <main className="max-w-[70rem] mx-auto mt-20 px-4 mb-10">
             <div className="text-center mb-12">
@@ -33,7 +30,7 @@ export default function TypesPage() {
                         Document Types
                     </h1>
                 </Skeleton>
-                <Spacer y={'px'} />
+                <Spacer y={"px"} />
                 <Skeleton isLoaded={!loading} className="rounded-md">
                     <p className="mt-2 text-gray-600 dark:text-gray-400">
                         Browse available barangay documents and services. Fees

@@ -1,23 +1,23 @@
 import { Pagination } from "@heroui/react";
 import React from "react";
 import type { BottomContentProps } from "./types";
+import { usePagination } from "../../../hooks/usePagination";
 
 const BottomContent = ({ data, params, setParams }: BottomContentProps) => {
-    const [currentPage, setCurrentPage] = React.useState<any>(
-        params?.page || 1
-    );
+    const initialPage = typeof params?.page === "number" ? params.page : 1;
+    const { currentPage, setPage, resetPage } = usePagination(initialPage);
     const { from, to, total } = data.meta;
-    
     const lastPage = data.meta.last_page;
+
     const onRowsPerPageChange = (
         event: React.ChangeEvent<HTMLSelectElement>
     ) => {
         setParams({ ...params, per_page: Number(event.target.value), page: 1 });
-        setCurrentPage(1); // reset to first page when rows per page changes
+        resetPage(); // reset to first page when rows per page changes
     };
 
     const onPaginateChange = (page: number) => {
-        setCurrentPage(page);
+        setPage(page);
         setParams({ ...params, page });
     };
     return (

@@ -3,7 +3,7 @@ import { SmallArrowIcon } from "../icons/singletone/small-arrow";
 import type { Item } from "./types";
 import { Button } from "@heroui/react";
 import { useLocation, useNavigate } from "react-router";
-import { appPath } from "../../constants/app-path";
+import { flatPath } from "../../constants/app-path";
 import SEO from "../seo";
 
 type SidebarLinksProps = {
@@ -42,13 +42,16 @@ export const SidebarLinks = ({
         }
     }, [pathname, items, setActiveItem]);
 
-    const crumbs = appPath[pathname] || [];
-    const title =
-        crumbs.length > 0 ? crumbs.map((c) => c.label).join(" - ") : "BRMS App";
-    const description =
-        crumbs.length > 0
-            ? `You are viewing ${crumbs[crumbs.length - 1].label} in BMS App.`
-            : "BRMS application sidebar navigation.";
+    const path = flatPath.find((pth: any) => pth.path === pathname);
+    let title = "Home"
+    let description = "BMS APPLICATION"
+    
+    if(path){
+        title = path.crumbs.map((c: any) => c.label).join(" - ");
+        description = `You are viewing ${
+            path.crumbs[path.crumbs.length - 1].label
+        } in BMS App.`;
+    }
 
     return (
         <>
@@ -127,7 +130,7 @@ const SidebarItem = memo(
             <li>
                 <Button
                     onPress={handlePress}
-                    isDisabled={item.id == "chat" || item.id == "contact" }
+                    isDisabled={item.id == "chat" || item.id == "contact"}
                     className={`cursor-pointer flex w-full bg-transparent items-center justify-between rounded-lg px-3 py-2 text-sm ${
                         pathname === item.href
                             ? "bg-accent-100 text-accent dark:bg-accent dark:text-accent-100"
