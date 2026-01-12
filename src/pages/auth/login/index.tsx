@@ -53,14 +53,12 @@ export default function Loginpage() {
                     validationBehavior="native"
                     onSubmit={handleSubmit}>
                     <Input
-                        isRequired
                         label="Username"
                         name="username"
                         placeholder="Enter your email or username"
                         variant="bordered"
                     />
                     <Input
-                        isRequired
                         endContent={
                             <button
                                 type="button"
