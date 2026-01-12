@@ -1,40 +1,40 @@
 import { useEffect, useState } from "react";
-import type { ApiResponse } from "../pages/documents/history-page/types";
 import { Api } from "../service/api/request";
 
 const useFetch = (uri: string, params: any = null) => {
-    const [data, setData] = useState<ApiResponse>({
+    const [data, setData] = useState<any>({
         data: [],
         meta: { from: 0, last_page: 1, total: 0, to: 0 },
         link: {},
     });
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<any>(null);
 
+    const fetchData = async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const response = await Api.get(uri, { params });
+            setData(response.data);
+        } catch (err: any) {
+            setError(err);
+        } finally {
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 1000);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await Api({
-                    method: "GET",
-                    url: uri,
-                    params: params,
-                });
-
-                const data = await response.data;
-                setData(data);
-            } catch (error: any) {
-                setError(error);
-            } finally {
-                setTimeout(() => {
-                    setIsLoading(false);
-                }, 1000);
-            }
-        };
-
+        let mounted = true;
+        if (!mounted) return;
         fetchData();
-    }, [params]);
+        return () => {
+            mounted = false;
+        };
+    }, [uri, JSON.stringify(params)]);
 
-    return { data, isLoading, error };
+    return { data, isLoading, error, refetch: fetchData };
 };
 
 export default useFetch;

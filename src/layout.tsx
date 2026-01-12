@@ -1,12 +1,15 @@
 import { Navbar } from "./components/navbar";
-import { Outlet } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 import { Sidebar } from "./components/sidebar";
 import { useNavigation } from "react-router";
 import LoadingBar from "react-top-loading-bar";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useContext } from "react";
+import { UserContext } from "./provider/UserContext";
 const ClientLayout = () => {
     const navigation = useNavigation();
     const topBarRef = useRef<any>(null);
+    const { token, isAuthenticated } = useContext<any>(UserContext);
+    const location = useLocation();
 
     useEffect(() => {
         if (navigation.state === "loading") {
@@ -15,6 +18,12 @@ const ClientLayout = () => {
             topBarRef.current?.complete();
         }
     }, [navigation.state]);
+
+    // render-time redirect to avoid flashing child content
+    if ((!token && !isAuthenticated) && location.pathname !== "/login") {
+
+        return <Navigate to="/login" replace />;
+    }
 
     return (
         <main className="flex h-screen overflow-hidden">

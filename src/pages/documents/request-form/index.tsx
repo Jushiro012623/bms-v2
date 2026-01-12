@@ -14,13 +14,14 @@ import {
     Skeleton,
 } from "@heroui/react";
 import { AlertIcon } from "../../../components/icons/singletone/alert";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router";
-import { handleAxiosError } from "../../../helpers/errorHandling";
-import ErrorPage from "../../error-page";
-import useFetch from "../../../hooks/useFetch";
+import { handleAxiosError } from "../../../helpers/error-handling";
+// import ErrorPage from "../../error-page";
+// import useFetch from "../../../hooks/useFetch";
 import { Api } from "../../../service/api/request";
+import { docType, requestDocumentPOST } from "../../../mock";
 
 const Notice = ({ doc }: { doc: any }) => {
     if (!doc) return null;
@@ -93,44 +94,49 @@ const RequestFormPage = () => {
             doc_type_id: "",
         });
     };
-    const { isLoading: loading, data, error } = useFetch("document-types");
 
-    if (error) {
-        return (
-            <ErrorPage
-                statusCode={error.response?.data.error.status || undefined}
-            />
-        );
-    }
+    const [data, setData] = useState<any>(docType);
+    console.log(data);
+
+    const [loading, setLoading] = useState<any>(true);
+    // const { isLoading: loading, data, error } = useFetch("document-types");
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+            setData(docType);
+            console.log(data);
+        }, 1000);
+    }, []);
+
+    // if (error) {
+    //     return (
+    //         <ErrorPage
+    //             statusCode={error.response?.data.error.status || undefined}
+    //         />
+    //     );
+    // }
 
     const onSubmit = async (event: any) => {
-
         setSubmitLoading(true);
-        
+
         try {
             event?.preventDefault();
 
-            const res = await Api({
-                method: "POST",
-                url: "document-requests",
-                data: inputData,
-            });
-
-            const item = await res.data.data;
+            const item = requestDocumentPOST(inputData);
             
-            if(item.document_type.fee != Number(0)){
+                console.log(item)
+            if (item.document_type?.fee !== 0) {
+                
                 navigate("/payment-gateway", {
-                    state: {
-                        data: item,
-                    },
+                    state: { data: item },
                 });
-            }else{
-                navigate("/documents")
+            } else {
+                navigate("/documents");
             }
 
             addToast({
                 title: "Success",
-                description: res.data.message,
+                description: "Request Successfully Submitted",
                 color: "success",
                 timeout: 3000,
                 shouldShowTimeoutProgress: true,
@@ -156,9 +162,9 @@ const RequestFormPage = () => {
                 });
             }
             setSubmitLoading(false);
-            resetData();
         }
     };
+
     const onDocumentSelectChange = (keys: any) => {
         const key = Array.from(keys)[0]; // single select
         setInputData((prev: any) => ({ ...prev, doc_type_id: key }));

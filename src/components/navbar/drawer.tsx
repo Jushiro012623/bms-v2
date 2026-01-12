@@ -16,9 +16,14 @@ import {
 import { drawer_links } from "./nav-buttons";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router";
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../provider/UserContext";
 
 export default function ProfileAvatar() {
+    const { user, logout } = useContext(UserContext);
+
+    const { name, email } = user || {};
+
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { pathname } = useLocation();
     const navigate = useNavigate();
@@ -33,7 +38,7 @@ export default function ProfileAvatar() {
                 }}
             />
             {/* <Button onPress={onOpen}>Open Drawer</Button> */}
-            <Drawer isOpen={isOpen} onOpenChange={onOpenChange} size="xs" >
+            <Drawer isOpen={isOpen} onOpenChange={onOpenChange} size="xs">
                 <DrawerContent>
                     {(onClose) => (
                         <>
@@ -47,10 +52,10 @@ export default function ProfileAvatar() {
                                 />
                                 <Spacer y={6} />
                                 <p className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                                    Infinity Dev
+                                    {name}
                                 </p>
                                 <p className="text-sm text-gray-400 font-normal">
-                                    idevx@gmail.com
+                                    {email}
                                 </p>
                             </DrawerHeader>
                             <DrawerBody>
@@ -58,7 +63,10 @@ export default function ProfileAvatar() {
                                 {drawer_links.map((link, i) => (
                                     <React.Fragment key={i}>
                                         <Button
-                                            onPress={() => {navigate(link.href); onClose()}}
+                                            onPress={() => {
+                                                navigate(link.href);
+                                                onClose();
+                                            }}
                                             className={`cursor-pointer flex w-full bg-transparent items-center justify-between rounded-lg px-3 py-2 text-sm 
                                         ${
                                             pathname === link.href
@@ -109,7 +117,7 @@ export default function ProfileAvatar() {
                                 <Button
                                     fullWidth
                                     className="bg-red-200 text-red-600 dark:bg-red-100"
-                                    onPress={onClose}>
+                                    onPress={() => logout()}>
                                     Logout
                                 </Button>
                             </DrawerFooter>

@@ -6,19 +6,21 @@ import {
     Image,
 } from "@heroui/react";
 import { Navigate, useLocation, useNavigate } from "react-router";
-import { capitalizeFirstLetter, onlyDate } from "../../../helpers/getNestedValueTable";
+import { capitalizeFirstLetter, onlyDate } from "../../../helpers/get-nested-value-table";
 import { REQUEST_STATUS } from "../../../constants/status";
+import {useEffect} from "react";
 
 const ViewForm = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { data } = location.state || {};
 
-    if (!data) {
-        return <Navigate to="/documents/" />;
-    }
+    useEffect(() => {
+        if (!location.state?.data) {
+            navigate("/documents/", { replace: true });
+        }
+    }, [location.state, navigate]);
 
-    
     return (
         <main className="max-w-[70rem] mx-auto mt-20 flex flex-col gap-6">
             {/* Main content */}

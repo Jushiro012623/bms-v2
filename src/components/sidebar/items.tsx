@@ -9,11 +9,11 @@ import { ListIcon } from "../icons/duotone/list";
 import { AddIcon } from "../icons/duotone/add";
 import { ProfileIcon } from "../icons/duotone/profile";
 
-export const overviewItems: Item[] = [
+const overviewItems: Item[] = [
     { id: "home", label: "Home", icon: HomeIcon, href: "/" },
 ];
 
-export const managementItems: Item[] = [
+const managementItems: Item[] = [
     {
         id: "document",
         label: "Document",
@@ -55,7 +55,15 @@ export const managementItems: Item[] = [
     { id: "chat", label: "Chats", icon: ChatIcon, href: "/chats" },
 ];
 
-export const supportItems: Item[] = [
+const supportItems: Item[] = [
     { id: "faq", label: "Faq", icon: QuestionIcon, href: "/faq" },
     { id: "contact", label: "Contact", icon: ContactIcon, href: "/contact" },
 ];
+
+
+export const sideBarsLinks = [
+    {tab: "OVERVIEW", items: overviewItems},
+    {tab: "MANAGEMENT", items: managementItems},
+    {tab: "SUPPORT", items: supportItems},
+
+]

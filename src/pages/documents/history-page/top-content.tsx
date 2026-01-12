@@ -7,7 +7,7 @@ import {
     Tab,
     Tabs,
 } from "@heroui/react";
-import React from "react";
+import React, { useMemo } from "react";
 import { tabs } from "./items";
 import {
     REQUEST_STATUS,
@@ -19,6 +19,7 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { HiMiniTrash } from "react-icons/hi2";
 import { BiPlus } from "react-icons/bi";
 import { useNavigate } from "react-router";
+import { useDocumentRequestOnly, useDocumentSearch } from "./hooks";
 
 export const TopContent = ({
     params,
@@ -31,25 +32,9 @@ export const TopContent = ({
 
     const navigate = useNavigate();
 
-    React.useEffect(() => {
-        setSearchText(params?.search || "");
-        if (params?.only) {
-            setDocuments(new Set(params.only.split(",")));
-        }
-    }, [params?.only]);
+    useDocumentRequestOnly(params, setSearchText, setDocuments);
 
-    React.useEffect(() => {
-        const delay = setTimeout(() => {
-            if (searchText.trim()) {
-                const { page, ...newParams } = params || {};
-                setParams({ ...newParams, search: searchText });
-            } else {
-                const { search, page, ...newParams } = params || {};
-                setParams(newParams);
-            }
-        }, 500);
-        return () => clearTimeout(delay);
-    }, [searchText]);
+    useDocumentSearch(searchText, params, setParams);
 
     const onDocumentSelectChange = (keys: any) => {
         setDocuments(keys);
@@ -57,10 +42,11 @@ export const TopContent = ({
         setParams({ ...params, only: selected });
     };
 
-    const tabsSelectedKeys = (params: { status: string }) =>
-        params?.status
+    const tabsSelectedKeys = useMemo(() => {
+        return params?.status
             ? REQUEST_STATUS_NUMBER[params?.status].toString()
             : "all";
+    }, [params]);
 
     const tabsOnSelectionChange = (key: string | number) => {
         if (key.toString() === "all") {
@@ -75,6 +61,25 @@ export const TopContent = ({
         }
     };
 
+    const handleClearDocumentSelector = () => {
+        const { only, ...newParams } = params;
+        setDocuments(new Set());
+        setParams({ ...newParams });
+    };
+
+    const handlePayNowButton = () => {
+        navigate("/payment-gateway", {
+            state: { data: selectedKeys },
+        });
+    };
+
+    const handleOnSearchInputClear = () => {
+        const { search, page, ...newParams } = params;
+        setParams(newParams);
+    };
+
+    const handleNewRequestButton = () => navigate("/documents/form-request");
+
     return (
         <div className="flex w-full flex-col gap-4">
             <div className="flex items-center w-full justify-between">
@@ -82,8 +87,8 @@ export const TopContent = ({
                     aria-label="Dynamic tabs"
                     items={tabs}
                     className="flex-1"
-                    selectedKey={tabsSelectedKeys(params)}
-                    onSelectionChange={(key) => tabsOnSelectionChange(key)}>
+                    selectedKey={tabsSelectedKeys}
+                    onSelectionChange={tabsOnSelectionChange}>
                     {(item) => (
                         <Tab
                             key={item.id}
@@ -107,19 +112,17 @@ export const TopContent = ({
                 <div className="flex gap-2">
                     {selectedKeys && selectedKeys.length > 0 && (
                         <Button
+                            aria-label="Pay Now"
                             variant="bordered"
                             className=" text-primera"
-                            onPress={() => {
-                                navigate("/payment-gateway", {
-                                    state: { data: selectedKeys },
-                                });
-                            }}>
+                            onPress={handlePayNowButton}>
                             Pay Now
                         </Button>
                     )}
                     <Button
+                        aria-label="Request New Document"
                         className="bg-primera text-white"
-                        onPress={() => navigate("/documents/form-request")}>
+                        onPress={handleNewRequestButton}>
                         Request <BiPlus size={18} />
                     </Button>
                 </div>
@@ -135,7 +138,7 @@ export const TopContent = ({
                     variant="bordered"
                     selectionMode="multiple"
                     onSelectionChange={onDocumentSelectChange}>
-                    {docTypes.map((docType: any) => (
+                    {docTypes && docTypes.map((docType: any) => (
                         <SelectItem key={docType.id}>{docType.name}</SelectItem>
                     ))}
                 </Select>
@@ -150,13 +153,8 @@ export const TopContent = ({
                         inputWrapper: ["h-full", "border-1", "cursor-text!"],
                     }}
                     value={searchText}
-                    onClear={() => {
-                        const { search, page, ...newParams } = params;
-                        setParams(newParams);
-                    }}
-                    onValueChange={(value: string) => {
-                        setSearchText(value);
-                    }}
+                    onClear={handleOnSearchInputClear}
+                    onValueChange={setSearchText}
                     variant="bordered"
                     placeholder="Type to search..."
                     radius="sm"
@@ -212,11 +210,7 @@ export const TopContent = ({
                         variant="light"
                         color="danger"
                         className="w-fit flex text-red-400 items-center cursor-pointer"
-                        onPress={() => {
-                            const { only, ...newParams } = params;
-                            setDocuments(new Set());
-                            setParams({ ...newParams });
-                        }}>
+                        onPress={handleClearDocumentSelector}>
                         <HiMiniTrash size={20} className="text-red-400" />
                         <p className="font-semibold text-sm">Clear</p>
                     </Button>

@@ -1,0 +1,8 @@
+{
+  "paths": {
+    "component": "src/components",
+    "hook": "src/hooks",
+    "page": "src/pages"
+  },
+  "extension": "tsx"
+}

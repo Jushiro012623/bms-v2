@@ -7,21 +7,31 @@ import {
     Skeleton,
     Spacer,
 } from "@heroui/react";
-import ErrorPage from "../../error-page";
-import useFetch from "../../../hooks/useFetch";
+// import ErrorPage from "../../error-page";
+// import useFetch from "../../../hooks/useFetch";
 import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { docType } from "../../../mock";
 
 export default function TypesPage() {
     const navigate = useNavigate();
-    const { isLoading: loading, data, error } = useFetch("document-types");
-
-    if (error) {
-        return (
-            <ErrorPage
-                statusCode={error.response?.data.error.status || undefined}
-            />
-        );
-    }
+    const [data, setData] =  useState<any>(null);
+    const [loading, setLoading] =  useState<any>(true);
+    // const { isLoading: loading, data, error } = useFetch("document-types");
+    useEffect(() => {
+        setTimeout(() => {
+            setLoading(false);
+            setData(docType);
+        }, 1000);
+    }, []);
+    
+    // if (error) {
+    //     return (
+    //         <ErrorPage
+    //             statusCode={error.response?.data.error.status || undefined}
+    //         />
+    //     );
+    // }
     return (
         <main className="max-w-[70rem] mx-auto mt-20 px-4 mb-10">
             <div className="text-center mb-12">

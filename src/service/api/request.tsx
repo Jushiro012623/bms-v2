@@ -1,4 +1,4 @@
-import axios, { type AxiosResponse } from "axios";
+import axios from "axios";
 import { config as app } from "../../config/app";
 
 /*
@@ -33,10 +33,10 @@ export const Api = axios.create({
 
 Api.interceptors.request.use(
     async (config: any) => {
-        const token: TToken | null = getCookie("_accessToken");
+        const token: TToken | null = localStorage.getItem("token");
         console.log("Token in interceptor:", token);
         if (token) {
-            config.headers["Authorization"] = `Bearer ${token}`;
+            config.headers["Authorization"] = `Bearer ${token ? JSON.parse(token) : null}`;
         }
 
         return config;

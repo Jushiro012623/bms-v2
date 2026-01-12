@@ -14,9 +14,14 @@ import { HomeIcon } from "../../components/icons/duotone/home";
 import { MasterCardIcon } from "../../components/icons/multicolor/mastercard";
 import { SmallArrowIcon } from "../../components/icons/singletone/small-arrow";
 import { VisaIcon } from "../../components/icons/multicolor/visa";
-import Summary from "./usage-summary";
+import { useContext } from "react";
+import { UserContext } from "../../provider/UserContext";
+import { titleCase } from "../../helpers/string-helper";
 
 const ProfilePage = () => {
+    
+    const { user } = useContext(UserContext);
+
     return (
         <main className="mx-auto mt-20 max-w-[65rem] px-4">
             {/* Banner + Profile */}
@@ -30,9 +35,9 @@ const ProfilePage = () => {
                     />
                     <div>
                         <h1 className="font-bold text-3xl text-white">
-                            Infinity Dev
+                            {user?.name}
                         </h1>
-                        <p className="font-medium text-gray-200">Developer</p>
+                        <p className="font-medium text-gray-200">{titleCase(user?.role)}</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +62,7 @@ const ProfilePage = () => {
                                     className="text-primera dark:text-accent"
                                 />
                                 <span className="text-sm text-gray-700 dark:text-gray-300">
-                                    +63 912-5279-754
+                                    {user?.phone}
                                 </span>
                             </div>
                             <div className="flex items-center gap-4">
@@ -66,7 +71,7 @@ const ProfilePage = () => {
                                     className="text-primera dark:text-accent"
                                 />
                                 <span className="text-sm text-gray-700 dark:text-gray-300">
-                                    idevx@gmail.com
+                                    {user?.email}
                                 </span>
                             </div>
                             <div className="flex items-center gap-4">
@@ -75,7 +80,7 @@ const ProfilePage = () => {
                                     className="text-primera dark:text-accent"
                                 />
                                 <span className="text-sm text-gray-700 dark:text-gray-300">
-                                    30 Lorem ipsum dolor sit amet.
+                                    {user?.address}
                                 </span>
                             </div>
                         </div>
@@ -83,8 +88,7 @@ const ProfilePage = () => {
                     <CardFooter>
                         <Button
                             variant="flat"
-                            className="w-full bg-primera/10 text-primera dark:text-accent"
-                        >
+                            className="w-full bg-primera/10 text-primera dark:text-accent">
                             Edit Info
                             <SmallArrowIcon
                                 size={18}
@@ -97,7 +101,9 @@ const ProfilePage = () => {
                 {/* Right Side - Transactions */}
                 <Card className="flex-1 shadow-sm dark:bg-zinc-800/50">
                     <CardHeader className=" px-5">
-                        <h2 className="font-semibold text-lg">Recent Transactions</h2>
+                        <h2 className="font-semibold text-lg">
+                            Recent Transactions
+                        </h2>
                     </CardHeader>
                     <Divider />
                     <CardBody className="space-y-6">
@@ -123,8 +129,7 @@ const ProfilePage = () => {
                         ].map((tx, i) => (
                             <div
                                 key={i}
-                                className="flex items-center justify-between gap-4 bg-gray-50 dark:bg-zinc-800/40 p-3 rounded-xl"
-                            >
+                                className="flex items-center justify-between gap-4 bg-gray-50 dark:bg-zinc-800/40 p-3 rounded-xl">
                                 <div className="flex items-center gap-4">
                                     {tx.icon}
                                     <div>
@@ -145,8 +150,7 @@ const ProfilePage = () => {
                     <CardFooter className="justify-end">
                         <Button
                             variant="flat"
-                            className="text-primera dark:text-accent"
-                        >
+                            className="text-primera dark:text-accent">
                             See more
                             <SmallArrowIcon
                                 size={18}

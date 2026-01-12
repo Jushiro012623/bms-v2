@@ -35,18 +35,15 @@ const Navbar = () => {
         );
         if (candidates.length === 0) return null;
 
-        // pick the longest path (deepest match)
         return candidates.reduce((a, b) =>
             a.path.length >= b.path.length ? a : b
         );
     }, [pathname]);
 
-    // local crumbs state (always replace, never mutate)
     const [crumbs, setCrumbs] = useState<{ label: string; path: string }[]>([]);
 
     useEffect(() => {
         if (currentItem && Array.isArray(currentItem.crumbs)) {
-            // clone to avoid accidental mutation elsewhere
             setCrumbs(
                 currentItem.crumbs.map((c: any) =>
                     typeof c === "string"
@@ -55,7 +52,6 @@ const Navbar = () => {
                 )
             );
         } else {
-            // fallback (you can choose to show Home or clear)
             setCrumbs([{ label: "Home", path: "/" }]);
         }
     }, [currentItem]);
@@ -76,7 +72,6 @@ const Navbar = () => {
                                 <BreadcrumbItem
                                     key={`${crumb.path}-${index}`}
                                     onClick={() => {
-                                        // only navigate when not last crumb
                                         if (!isLast) navigate(crumb.path);
                                     }}
                                     classNames={{

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     Card,
     CardBody,
@@ -12,7 +12,7 @@ import PaymentMethodSelector from "../payment-page/selector";
 import PaymentSummary from "../payment-page/summary";
 import { VisaIcon } from "../../components/icons/multicolor/visa";
 import { MasterCardIcon } from "../../components/icons/multicolor/mastercard";
-import { Navigate, useLocation } from "react-router";
+import {useLocation, useNavigate} from "react-router";
 
 const methods = [
     {
@@ -35,12 +35,13 @@ const methods = [
 export default function PaymentGatewayPage() {
     const location = useLocation();
     const { data } = location.state || {};
-
-    if (!data) {
-        return <Navigate to="/documents/" />;
-    }
-
-    console.log(data);
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        if (!location.state?.data) {
+            navigate("/documents/", { replace: true });
+        }
+    }, [location.state, navigate]);
 
     const [paymentMethod, setPaymentMethod] = useState("cash");
 
@@ -53,9 +54,13 @@ export default function PaymentGatewayPage() {
         );
     }, [data]);
 
-    const selectedMethod = methods.find((m) => m.key === paymentMethod)!;
+    const selectedMethod = useMemo(() => methods.find((m) => m.key === paymentMethod)!, [paymentMethod]);
+
+    const normalizedData = useMemo(
+        () => (Array.isArray(data) ? data : [data]),
+        [data]
+    );
     
-    const normalizedData = Array.isArray(data) ? data : [data];
     return (
         <main className="mx-auto max-w-[55rem] mt-15">
             <Card className="shadow-md rounded-2xl px-4 py-3">
