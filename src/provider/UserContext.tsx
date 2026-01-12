@@ -23,10 +23,10 @@ const UserContextProvider = ({ children }: PropsWithChildren) => {
         //     username: formData.get("username"),
         //     password: formData.get("password"),
         // });
-        if((formData.get("username") !== userAcc.data.username || formData.get("username") !== userAcc.data.email)
-            && formData.get("password") !== userAcc.data.password){
-            throw new Error("Invalid credentials")
-        }
+        // if((formData.get("username") !== userAcc.data.username || formData.get("username") !== userAcc.data.email)
+        //     && formData.get("password") !== userAcc.data.password){
+        //     throw new Error("Invalid credentials")
+        // }
         const response = loginRes
 
         setToken(response.data?.access_token);
